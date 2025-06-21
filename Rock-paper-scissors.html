@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f1e8;
+      text-align: center;
+      padding: 50px;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      margin: 20px;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 2px solid #444;
+      background-color: white;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+
+    .result {
+      font-size: 1.5em;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+
+    .choices {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+
+    .history {
+      margin-top: 40px;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .history ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .history li {
+      background-color: #fff;
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rock, Paper, Scissors</h1>
+
+  <div class="buttons">
+    <button onclick="play('rock')">🪨 Rock</button>
+    <button onclick="play('paper')">📄 Paper</button>
+    <button onclick="play('scissors')">✂️ Scissors</button>
+  </div>
+
+  <div class="choices" id="choices"></div>
+  <div class="result" id="result"></div>
+  <img id="result-image" src="" alt="Game result" style="max-width: 200px; margin-top: 20px; display: none;">
+
+  <div class="history" id="history">
+    <h3>Game History</h3>
+    <ul id="history-list"></ul>
+  </div>
+
+  <script>
+    function play(playerChoice) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+      const resultText = document.getElementById('result');
+      const choiceText = document.getElementById('choices');
+      const historyUL = document.getElementById('history-list');
+      const resultImg = document.getElementById('result-image');
+
+      let result;
+      if (playerChoice === computerChoice) {
+        result = "Draw";
+      } else if (
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'paper' && computerChoice === 'rock') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper')
+      ) {
+        result = "Win";
+      } else {
+        result = "Lose";
+      }
+
+      // Display current round
+      choiceText.innerHTML = `You chose <strong>${playerChoice}</strong>. Computer chose <strong>${computerChoice}</strong>.`;
+      resultText.textContent = `You ${result}!`;
+
+      // Show image
+      let winnerImg = "";
+      if (result === "Draw") {
+        winnerImg = "assets/img/draw.png";
+        } else if (result === "Win") {
+        winnerImg = `assets/img/${playerChoice}-beats-${computerChoice}.png`;
+        } else {
+        winnerImg = `assets/img/${computerChoice}-beats-${playerChoice}.png`;
+        }
+
+      resultImg.src = winnerImg;
+      resultImg.style.display = 'block';
+
+      // Add to history list
+      const roundEntry = document.createElement('li');
+      roundEntry.innerHTML = `You: <strong>${playerChoice}</strong> | Computer: <strong>${computerChoice}</strong> — <em>${result}</em>`;
+      historyUL.prepend(roundEntry);
+    }
+  </script>
+
+</body>
+</html>
